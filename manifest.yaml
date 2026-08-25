@@ -10,7 +10,7 @@ metadata:
     tier: frontend
     component: frontend
 spec:
-  replicas: 3 # replica count = node count * 2 , always maintain like this, replica COUNT be like 2 ,4 ,6 ,8 even numbers,
+  replicas: 6 # replica count = node count * 2 , always maintain like this, replica COUNT be like 2 ,4 ,6 ,8 even numbers,
   selector:                                                                # then PODs will distibute equally between the nodes and zones 
     matchLabels:
       project: roboshop
