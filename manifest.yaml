@@ -33,9 +33,10 @@ spec:
           matchLabels:
             project: roboshop
 
+      # 2. Distribute equally across individual Nodes
       - maxSkew: 1
         topologyKey: topology.kubernetes.io/node
-        whenUnsatisfiable: ScheduleAnyway
+        whenUnsatisfiable: DoNotSchedule #ScheduleAnyway
         labelSelector:
           matchLabels:
             project: roboshop
