@@ -1,5 +1,9 @@
 # we use TopologySpreadConstraint to spread the pods across nodes and zones for High Availability
 
+# When both constraints  topologyKey: topology.kubernetes.io/zone ,whenUnsatisfiable: DoNotSchedule and topologyKey: kubernetes.io/hostname, 
+# whenUnsatisfiable:  DoNotSchedule  are set to DoNotSchedule with maxSkew: 1, the number of worker nodes across all Availability Zones must
+# be equal/symmetric to avoid deadlocks.
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,7 +39,7 @@ spec:
 
       # 2. Distribute equally across individual Nodes
       - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
+        topologyKey: topology.kubernetes.io/node
         whenUnsatisfiable:  DoNotSchedule #ScheduleAnyway #
         labelSelector:
           matchLabels:
