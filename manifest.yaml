@@ -8,7 +8,7 @@ metadata:
     tier: frontend
     component: frontend
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       project: roboshop
@@ -23,7 +23,7 @@ spec:
         component: frontend
     spec:
       topologySpreadConstraints:
-      - maxSkew: 1
+      - maxSkew: 0
         topologyKey: topology.kubernetes.io/zone
         whenUnsatisfiable: DoNotSchedule
         labelSelector:
