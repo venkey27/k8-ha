@@ -1,3 +1,5 @@
+# we use TopologySpreadConstraint to spread the pods across nodes and zones for High Availability
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -8,8 +10,8 @@ metadata:
     tier: frontend
     component: frontend
 spec:
-  replicas: 4
-  selector:
+  replicas: 10  # replica count = node count * 2 , always maintain like this, replica COUNT be like 2 ,4 ,6 ,8 even numbers,
+  selector:                                                                # then PODs will distibute equally between the nodes and zones 
     matchLabels:
       project: roboshop
       tier: frontend
@@ -23,7 +25,8 @@ spec:
         component: frontend
     spec:
       topologySpreadConstraints:
-      - maxSkew: 1
+      # 1. Distribute equally across Availability Zones
+      - maxSkew: 1             # maxSkew set the Pod difference between the NODES 
         topologyKey: topology.kubernetes.io/zone
         whenUnsatisfiable: DoNotSchedule
         labelSelector:
