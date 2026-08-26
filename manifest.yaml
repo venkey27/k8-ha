@@ -39,7 +39,7 @@ spec:
 
       # 2. Distribute equally across individual Nodes
       - maxSkew: 1
-        topologyKey: topology.kubernetes.io/node
+        topologyKey: kubernetes.io/hostname
         whenUnsatisfiable:  DoNotSchedule #ScheduleAnyway #
         labelSelector:
           matchLabels:
@@ -50,3 +50,18 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 80
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: nginx
+spec:
+  minAvailable: "50%"
+  selector:
+    matchLabels:
+      project: roboshop
+
+# voluntary situations like upgrading eks cluster cordon and drain, autoscaling situations we can save pods for HA using PodDisruptionBudget
+
+# we always need min availability for our application to work even in upgrade situations
