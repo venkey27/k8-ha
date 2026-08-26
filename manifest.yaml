@@ -65,3 +65,5 @@ spec:
 # voluntary situations like upgrading eks cluster cordon and drain, autoscaling situations we can save pods for HA using PodDisruptionBudget
 
 # we always need min availability for our application to work even in upgrade situations
+
+# k8-ha
