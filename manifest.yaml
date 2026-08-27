@@ -14,7 +14,7 @@ metadata:
     tier: frontend
     component: frontend
 spec:
-  replicas: 7 # replica count = node count * 2 , always maintain like this, replica COUNT be like 2 ,4 ,6 ,8 even numbers,
+  replicas: 3 # replica count = node count * 2 , always maintain like this, replica COUNT be like 2 ,4 ,6 ,8 even numbers,
   selector:                                                                # then PODs will distibute equally between the nodes and zones 
     matchLabels:
       project: roboshop
@@ -30,7 +30,7 @@ spec:
     spec:
       topologySpreadConstraints:
       # 1. Distribute equally across Availability Zones
-      - maxSkew: 1             # maxSkew set the Pod difference between the NODES 
+      - maxSkew: 1             # maxSkew is the allowed no of different count between the balanced and inbalanced nodes 
         topologyKey: topology.kubernetes.io/zone
         whenUnsatisfiable: DoNotSchedule
         labelSelector:
@@ -57,13 +57,18 @@ kind: PodDisruptionBudget
 metadata:
   name: nginx
 spec:
-  minAvailable: "70%"
+  minAvailable: "50%"
   selector:
     matchLabels:
       project: roboshop
 
 # voluntary situations like upgrading eks cluster cordon and drain, autoscaling situations we can save pods for HA using PodDisruptionBudget
 
+#voluntary situations like draining(upgrade) autoscaling prevents pod evictions if PodDisruptionBudget does not satisfy with minAvailability,
+# we can always set minAvailability based on number of nodes. PodDisruptionBudget will not protect in in-voluntary situations like crashing and 
+# deleting the node
+
+
 # we always need min availability for our application to work even in upgrade situations
 
-# k8-ha
+# always use 3 available zones 6 nodes and min availability 60%
